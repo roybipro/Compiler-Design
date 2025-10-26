@@ -1,1 +1,4 @@
-dekhao("Hello world")
+integer a te 5
+float b te 6
+dekhao("A te ", a)
+dekhao("B te ",b)
