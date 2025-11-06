@@ -333,15 +333,23 @@ static string trim(const string& s){
 }
 
 int main(){
-    ifstream fin("editor.txt");
-    if (!fin){ cerr<<"Error: could not open editor.txt\n"; return 1; }
+    ifstream fin("input.txt");
+    istream* src = nullptr;
+    bool fromStdin = false;
+    if (fin) {
+        src = &fin;
+    } else {
+        cerr << "Warning: input.txt not found, reading from standard input.\n";
+        src = &cin;
+        fromStdin = true;
+    }
 
     vector<unique_ptr<Stmt>> program;
     vector<string> warnings;
     string line; int lineNo=1;
 
     cout<<"=== Lexical Tokens ===\n";
-    while (getline(fin,line)) {
+    while (getline(*src,line)) {
         string t = trim(line);
         if (t.empty()) { ++lineNo; continue; }
         auto L = Lexer::lexLine(t, lineNo);
